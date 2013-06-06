@@ -56,40 +56,8 @@
 </select>
 <input type="submit" value="Submit" />
 </form>
-    <div id="map"></div>
 
-{% if valuesfordisplay %}
-
-  <script type='text/javascript'>
-  // change the argument to match your id
- var node = document.getElementById("map");
- d3.json("/static/js/munidata.json", function(data){
-   var pop_datamap = {};
-   //use FIPS code as key
-    data.forEach(function(pueblo){
-      //get id of pueblo with leading 0s.
-      var fips_3digits = pueblo.fips.length == 1 ? ("00" + pueblo.fips) :
-        (pueblo.fips.length == 2 ? ("0" + pueblo.fips) : pueblo.fips);
-     pop_datamap[fips_3digits] = pueblo.population;
-   });
-   var pop_map = new AtlasPR({node: node, size: "medium", tiles: 'pueblos',
-    labels: true, on_ready: function(){
-     // paint after drawing async.
-     pop_map.encode_quan(pop_datamap);
-   }});
- });
-  </script>
-
-{% else %}
-
-  <script type='text/javascript'>
-    var node = document.getElementById("map");
-    new AtlasPR({node: node, tiles: ['pueblos'], labels: true});
-  </script>
-
-{% endif %}
-
-
+    <div id="map2"></div>
 
 
     </section>
