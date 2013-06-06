@@ -51,7 +51,9 @@
 <select name="ind" >
     <option>Indicators</option>
     {% for c in indicators %}
-    <option value="{{ c.id }}">{{ c.indicator }}</option>
+    {% if c.category_id == "4" %}
+        <option value="{{ c.id }}">{{ c.indicator }}</option>
+    {% endif %}
     {% endfor %}
 </select>
 <input type="submit" value="Submit" />
