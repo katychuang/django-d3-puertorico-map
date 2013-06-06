@@ -1,11 +1,17 @@
 <html>
 <head>
+    <meta charset="utf-8">
     {% block css %}
     <link rel="stylesheet" href="static/css/id.css" type="text/css" media="screen, all" />
         <link rel="stylesheet" href="static/css/style.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="static/css/framework.css" type="text/css"
         media="screen" />
         <link rel="stylesheet" href="static/css/language.css" type="text/css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="static/css/atlaspr.css">
+        <script src="static/js/lib/d3.js"></script>
+        <script src="static/js/lib/klass.js"></script>
+        <script src="static/js/atlaspr.js"></script>
+
     {% endblock css %}
 </head>
 <body>
@@ -15,4 +21,9 @@
     {% endblock main %}
 </div>
 </body>
+  <script type='text/javascript'>
+  console.log("print map");
+    var node = document.getElementById("map");
+    new AtlasPR({node: node, tiles: ['pueblos']});
+  </script>
 </html>
