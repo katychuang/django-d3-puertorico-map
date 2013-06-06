@@ -721,7 +721,7 @@ float:right;
 .login label { text-transform: uppercase; }
 .login input[type="text"], .login input[type="password"] { background: #fff; border-top: 1px solid #cccccc; border-left: 1px solid #cccccc; border-bottom: 1px solid #f7f7f7; border-right: 1px solid #f7f7f7; padding: 9px; width: 100%; }
 .login .forgetmenot { float: left; margin: 0; }
-.login #wp-submit, .button-primary { float: right; font-size: 15px; background: #00b7de url(images/arrow-white.png) no-repeat right center; padding: 6px 26px 7px 18px; margin: 0; }
+.login #wp-submit, .button-primary { float: right; font-size: 15px; background: #00b7de url(/static/images/arrow-white.png) no-repeat right center; padding: 6px 26px 7px 18px; margin: 0; }
 .login .message { font-size: 18px; font-weight: 300; color: #555; }
 .tml-action-links { overflow: hidden; }
 .tml-action-links li { float: left; margin-right: 10px; }

@@ -1412,3 +1412,20 @@ display: none;
 .thumbs div a img { border: none; }
 
 footer .thumbs div { width:40px; height:40px;}
+
+/*** Button */
+.button, button, input[type=submit]{
+display:inline-block;
+font-family:'Lato', Georgia, Arial !important;
+color:#fff !important;
+cursor:pointer;
+text-decoration:none;
+margin:0 0 10px;
+background:#01afee;
+border:0;
+padding:6px 18px 7px 18px;
+}
+
+.button:hover{
+text-decoration:none;
+}
