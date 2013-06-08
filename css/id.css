@@ -8,7 +8,7 @@ Template: Aeolus
 Version: 1.1
 */
 
-@import url("../aeolus/style.css");
+@import url("style.css");
 
 /*
 Magenta:    #a9014b
@@ -83,7 +83,7 @@ box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
 }
 
 /* agrega flechita blanca para botones de login en header */
-#top_wrapper .button.flecha { background-image: url('images/arrow-white.png'); background-position:center right; background-repeat: no-repeat; padding:6px 26px 7px 18px; float:right; margin: 0 6px; }
+#top_wrapper .button.flecha { background-image: url(/static/images/arrow-white.png); background-position:center right; background-repeat: no-repeat; padding:6px 26px 7px 18px; float:right; margin: 0 6px; }
 
 
 /* Top & Bottom Socials list */
@@ -172,7 +172,7 @@ footer .columns { padding: 0; }
 
 /* botones en footer widget 6 */
 .button-foot {
-    background: #999999 url('images/arrow-dark.png') no-repeat right center;
+    background: #999999 url(/static/images/arrow-dark.png) no-repeat right center;
     padding:6px 26px 7px 16px;
     font-weight: 300;
     font-size: 16px;
@@ -520,7 +520,7 @@ ul.contactenos li a:hover {text-decoration: underline;}
 .box-dark-grey, .box-dark-grey h1, .box-dark-grey h2, .box-dark-grey h3, .box-dark-grey h4, .box-dark-grey h5, .box-dark-grey h6 {color:#e1e1e1;}
 .box-dark-grey p, .box-dark-grey a {color:#e1e1e1; margin: 0 25px;}
 .box-dark-grey h4 {margin: 8px 25px;}
-.box-dark-grey a {background: url('images/arrow-white.png') right center no-repeat; padding: 0 26px 0 0; line-height:32px; margin-left: 0;}
+.box-dark-grey a {background: url(/static/images/arrow-white.png) right center no-repeat; padding: 0 26px 0 0; line-height:32px; margin-left: 0;}
 .box-dark-grey a:hover {text-decoration: underline;}
 
 /* FIN Nosotros */
@@ -573,7 +573,7 @@ text-decoration:none;
 /* boton registre organizacion */
 .reg { color: #555 !important; text-transform: uppercase; }
 .button.large.reg { font-size: 10px; line-height: 14px; padding: 6px 24px 7px 8px; width: 72%; margin: 0; }
-.button.green.reg { background: #a2c437 url(images/arrow-dark.png) no-repeat right center; }
+.button.green.reg { background: #a2c437 url(/static/images/arrow-dark.png) no-repeat right center; }
 .reg span { display: block; float: left; width: 27px; background: url(images/icon-house.png) no-repeat center center; height: 28px; margin-right: 5px; }
 
 /* Highlight box con título en mayúscula */
@@ -604,7 +604,7 @@ margin:4px 15px 0px 0px;
 float:right;
 }
 
-.button.flecha { background-image: url('images/arrow-white.png'); background-position: right center; background-repeat: no-repeat; padding:6px 26px 7px 18px; }
+.button.flecha { background-image: url(/static/images/arrow-white.png); background-position: right center; background-repeat: no-repeat; padding:6px 26px 7px 18px; }
 .button.flechaizq { background-image: url('images/arrow-white-back.png'); background-position: left center; background-repeat: no-repeat; padding:6px 18px 7px 26px; }
 .button.orange {background-color:#f89929 !important; /*anula el naranja del theme por el naranja del PSD */}
 

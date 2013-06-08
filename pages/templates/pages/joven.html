@@ -9,6 +9,17 @@ body {font-family: Helvetica;}
 .b {width:800px; height:450px;}
 #map{margin-top:100px;}
 </style>
+
+  <link href="/static/js/nvd3/nv.d3.css" rel="stylesheet" type="text/css">
+  <script src="/static/js/nvd3/nv.d3.min.js"></script>
+  <script type="text/javascript" src="/static/js/nvd3/utils.js"></script>
+  <script src="/static/js/nvd3/tooltip.js"></script>
+  <script src="/static/js/nvd3/utils.js"></script>
+  <script src="/static/js/nvd3/models/axis.js"></script>
+  <script src="/static/js/nvd3/models/discreteBar.js"></script>
+  <script src="/static/js/nvd3/models/discreteBarChart.js"></script>
+
+  <script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
 {% endblock css %}
 
 {% block main %}
@@ -38,7 +49,6 @@ function bunny(x){
           .x(function(d) { return d.label })
           .y(function(d) { return d.value })
           .staggerLabels(true)
-          //.staggerLabels(historicalBarChart[0].values.length > 8)
           .tooltips(false)
           .showValues(true)
             .height(400)
@@ -57,7 +67,7 @@ function bunny(x){
 
 
 
-$.getJSON('/edu.json', function(response){
+$.getJSON('/static/js/edu.json', function(response){
   // response is a variable containing the JSON object, if it fetched it successfully
     $("#name").html("<strong>San Juan</strong>");
     bunny(response["San Juan"]);
