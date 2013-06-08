@@ -1,5 +1,7 @@
-<html>
-<head><title>Estadisticas de Juventud de Puerto Rico, 2013</title></head>
+{% extends "base.html" %}
+
+{% block css %}
+{{ block.super }}
 <style type="text/css">
 body {font-family: Helvetica;}
 
@@ -7,24 +9,14 @@ body {font-family: Helvetica;}
 .b {width:800px; height:450px;}
 #map{margin-top:100px;}
 </style>
+{% endblock css %}
 
-<script src="/js/lib/d3.js"></script>
-<script src="/js/lib/klass.js"></script>
-<script src="/js/atlaspr.js"></script>
-
-<link href="/nvd3/src/nv.d3.css" rel="stylesheet" type="text/css">
-<script src="/nvd3/nv.d3.min.js"></script>
-<script type="text/javascript" src="nvd3/src/utils.js"></script>
-<script src="/nvd3/src/tooltip.js"></script>
-<script src="/nvd3/src/utils.js"></script>
-<script src="/nvd3/src/models/axis.js"></script>
-<script src="/nvd3/src/models/discreteBar.js"></script>
-<script src="/nvd3/src/models/discreteBarChart.js"></script>
-
-<script type="text/javascript" src="/jquery-1.9.1.min.js"></script>
+{% block main %}
 
 
-<body>
+{% include "pages/header.html" %}
+{% include "pages/pagetitle.html" %}
+
 
 <h1>Estadisticas de Juventud de Puerto Rico, 2013</h1>
 <h2>Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</h2>
@@ -85,5 +77,7 @@ $.getJSON('/edu.json', function(response){
 });
 </script>
 
-</body>
-</html>
+
+{% include "pages/footer.html" %}
+
+{% endblock main %}
