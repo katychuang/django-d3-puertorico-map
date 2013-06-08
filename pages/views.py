@@ -45,3 +45,17 @@ def search(request):
                                 "indicators": indicators,
                                 "valuesfordisplay": filtered_ind},
                               context_instance=RequestContext(request))
+
+def joven(request):
+    api_url = "http://www.pixelogicpr.com/PRYouthAPI/public/api/"
+    counties = simplejson.load(urllib.urlopen(api_url+"counties"))
+
+    categories = simplejson.load(urllib.urlopen(api_url+"categories"))
+
+    indicators = simplejson.load(urllib.urlopen(api_url+"indicatorsList"))
+
+    #pass to template
+    return render_to_response("pages/joven.html",
+        {"counties": counties,
+        "categories": categories,
+        "indicators": indicators})

@@ -1,0 +1,89 @@
+<html>
+<head><title>Estadisticas de Juventud de Puerto Rico, 2013</title></head>
+<style type="text/css">
+body {font-family: Helvetica;}
+
+.info {width:500px; vertical-align:text-top;}
+.b {width:800px; height:450px;}
+#map{margin-top:100px;}
+</style>
+
+<script src="/js/lib/d3.js"></script>
+<script src="/js/lib/klass.js"></script>
+<script src="/js/atlaspr.js"></script>
+
+<link href="/nvd3/src/nv.d3.css" rel="stylesheet" type="text/css">
+<script src="/nvd3/nv.d3.min.js"></script>
+<script type="text/javascript" src="nvd3/src/utils.js"></script>
+<script src="/nvd3/src/tooltip.js"></script>
+<script src="/nvd3/src/utils.js"></script>
+<script src="/nvd3/src/models/axis.js"></script>
+<script src="/nvd3/src/models/discreteBar.js"></script>
+<script src="/nvd3/src/models/discreteBarChart.js"></script>
+
+<script type="text/javascript" src="/jquery-1.9.1.min.js"></script>
+
+
+<body>
+
+<h1>Estadisticas de Juventud de Puerto Rico, 2013</h1>
+<h2>Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</h2>
+<p>Haz click, el nombre del municipio y las estadisticas aparecer&#225;n
+a la izquierda.</p>
+<table  border=1>
+<tr><td class="info">
+    <h1><span id="name"></span></h1>
+
+    <div id="chart">    <svg></svg></div></td>
+    <td class="b" ><div id="map"></div></td>
+</tr>
+</table>
+
+<script>
+function bunny(x){
+    nv.addGraph(function() {
+      var chart = nv.models.discreteBarChart()
+          .x(function(d) { return d.label })
+          .y(function(d) { return d.value })
+          .staggerLabels(true)
+          //.staggerLabels(historicalBarChart[0].values.length > 8)
+          .tooltips(false)
+          .showValues(true)
+            .height(400)
+          .forceY([0,40]);
+
+      d3.select('#chart svg')
+          .datum(x)
+        .transition().duration(250)
+          .call(chart);
+
+      nv.utils.windowResize(chart.update);
+
+      return chart;
+    });
+}
+
+
+
+$.getJSON('/edu.json', function(response){
+  // response is a variable containing the JSON object, if it fetched it successfully
+    $("#name").html("<strong>San Juan</strong>");
+    bunny(response["San Juan"]);
+    current = null;
+    last = null;
+    my_node = document.getElementById("map");
+    new AtlasPR({node: my_node, size:750, tiles: "pueblos",
+        events : {on_click: function(object, id){
+            $("#name").html("<strong>"+object.properties.NAME+"</strong>");
+            current = id+2;
+            $("path").eq(current).css("fill", "#FF0000");
+            $("path").eq(last).css("fill", "#FFFFFF");
+            last = id+2;
+            bunny(response[object.properties.NAME]);
+            //feature.style("fill", "red");
+        }}});
+});
+</script>
+
+</body>
+</html>

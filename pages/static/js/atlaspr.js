@@ -38,7 +38,8 @@ var AtlasPR = klass(function (options) {
       width: 2400
     }
   };
-  this.width = this.size_attributes[this.options.size || "medium"].width;
+  //this.width = this.size_attributes[this.options.size || "medium"].width;
+  this.width = this.options.size;
   this.height = this.width/3;
   this.original_scale = this.width*27;
   this.draw();
