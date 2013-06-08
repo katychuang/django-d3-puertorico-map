@@ -1,7 +1,8 @@
 mymaps/*
 .DS_Store
+atlaspr-master.zip
 
-
+# From https://github.com/github/gitignore
 *.py[cod]
 
 # C extensions
