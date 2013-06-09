@@ -3,11 +3,10 @@
 {% block css %}
 {{ block.super }}
 <style type="text/css">
-body {font-family: Helvetica;}
-
-.info {width:500px; vertical-align:text-top;}
-.b {width:800px; height:450px;}
-#map{margin-top:100px;}
+.info {width:500px; vertical-align:text-top; height:450px;}
+.b {width:600px; height:350px; padding-left:120px;}
+#map{margin-top:70px;}
+.xlabel{font-weight: bold;font-size: 13pt}
 </style>
 
   <link href="/static/js/nvd3/nv.d3.css" rel="stylesheet" type="text/css">
@@ -26,20 +25,37 @@ body {font-family: Helvetica;}
 
 
 {% include "pages/header.html" %}
-{% include "pages/pagetitle.html" %}
 
+<section id="pagetitle-wrapper" style="background-color: #00b7de;">
+  <div class="row">
+      <div class="twelve columns">
+          <h3>Estadísticas</h3><p>Estadisticas de Juventud de Puerto Rico, 2013<br />Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</p>
 
-<h1>Estadisticas de Juventud de Puerto Rico, 2013</h1>
-<h2>Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</h2>
-<p>Haz click, el nombre del municipio y las estadisticas aparecer&#225;n
+          <p>Haz click, el nombre del municipio y las estadisticas aparecer&#225;n
 a la izquierda.</p>
-<table  border=1>
-<tr><td class="info">
-    <h1><span id="name"></span></h1>
+      </div>
 
-    <div id="chart">    <svg></svg></div></td>
+      <div class="twelve columns">
+          <div id="breadcrumb">
+                <ul>
+                   <li class="bread-txt">
+                    <a href="/">
+                        <img src="http://pixelogic.co/c/bgc/www/wp-content/themes/aeolus/images/breadcrumb_home.png" alt=""></a></li>  <li class="current-page">Estadísticas
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<table width="100%" border="0">
+<tr>
     <td class="b" ><div id="map"></div></td>
 </tr>
+<tr><td class="info" align="center">
+    <h1 id="name"></h1>
+    <div id="chart"><svg></svg></div>
+</td></tr>
 </table>
 
 <script>
@@ -59,7 +75,16 @@ function bunny(x){
         .transition().duration(250)
           .call(chart);
 
-      nv.utils.windowResize(chart.update);
+      //Add Label
+      d3.select('#chart svg')
+      .append("text")
+      .attr("class", "xlabel")
+      .attr("text-anchor", "end")
+      .attr("x", "550")
+      .attr("y", "400")
+      .text("Grade Level");
+
+        nv.utils.windowResize(chart.update);
 
       return chart;
     });
@@ -69,20 +94,22 @@ function bunny(x){
 
 $.getJSON('/static/js/edu.json', function(response){
   // response is a variable containing the JSON object, if it fetched it successfully
-    $("#name").html("<strong>San Juan</strong>");
+    $("#name").html("<strong>Pueblos: San Juan</strong>");
     bunny(response["San Juan"]);
     current = null;
     last = null;
     my_node = document.getElementById("map");
-    new AtlasPR({node: my_node, size:750, tiles: "pueblos",
+
+    new AtlasPR({node: my_node, size:350, tiles: "pueblos",
         events : {on_click: function(object, id){
-            $("#name").html("<strong>"+object.properties.NAME+"</strong>");
-            current = id+2;
-            $("path").eq(current).css("fill", "#FF0000");
-            $("path").eq(last).css("fill", "#FFFFFF");
-            last = id+2;
+            $("#name").html("<strong>Pueblos: "+object.properties.NAME+"</strong>");
+
+            //coloring only selected region
+            d3.selectAll("svg").selectAll("path").style("fill", "white");
+            d3.select(id).style("fill", "red");
+
             bunny(response[object.properties.NAME]);
-            //feature.style("fill", "red");
+
         }}});
 });
 </script>
