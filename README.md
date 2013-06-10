@@ -14,10 +14,6 @@ Demo: http://puertorico.herokuapp.com/
 Interactive Reports: http://puertorico.herokuapp.com/joven/
 
 
+![landing](screenshot/landing.png)
 
-Any feedback would be welcome as I continue to work on this.
-
-
-[landing](screenshot/landing.png)
-
-[interactive](screenshot/interactive.png)
+![interactive](screenshot/interactive.png)
