@@ -13,7 +13,15 @@ Demo: http://puertorico.herokuapp.com/
 
 Interactive Reports: http://puertorico.herokuapp.com/joven/
 
+# Landing Page
+
+This page shows the map of Puerto Rico (rendered by AtlasPR). There are links to the interactive report and to view indicators for education.
 
 ![landing](screenshot/landing.png)
+
+
+# Interactive Report
+
+This [page](http://puertorico.herokuapp.com/joven/) uses D3.js and NVD3.js to render both the map and the chart. Clicking on a county on the map will show statistics in the bar chart on the left.
 
 ![interactive](screenshot/interactive.png)
