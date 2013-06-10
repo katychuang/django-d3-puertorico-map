@@ -37,7 +37,7 @@
             <label> Estadísticas de la educación </label>
 
             <select name="indicators" >
-                <option>-- Indicator --</option>
+                <option value="58">-- Indicator --</option>
                 {% for c in indicators %}
                 {% if c.category_id == "4" %}
                     <option value="{{ c.id }}">{{ c.indicator }}</option>
@@ -97,7 +97,7 @@ Sorted By Value: <br>
   // change the argument to match your id
  var node = document.getElementById("map");
 
- d3.json("{{ valuesfordisplay }}", function(data){
+ d3.json("/static/js/munidata.json", function(data){
    var pop_datamap = {};
    //use FIPS code as key
     data.forEach(function(pueblo){
