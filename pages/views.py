@@ -4,6 +4,13 @@ from django.db.models import Q
 from django.template import RequestContext
 import simplejson, urllib
 
+
+#for contact form
+from django.shortcuts import render
+from pages.forms import ContactForm
+from django.http import HttpResponseRedirect
+from django.core.mail import send_mail
+
 # Create your views here.
 
 def home(request):
@@ -30,9 +37,8 @@ def search(request):
 
     query_cat = ''
     query_ind = ''
+    filtered_ind = ''
     found_entries = None
-    if ('cat' in request.GET) and request.GET['cat'].strip():
-        query_cat = request.GET['cat']
 
     if ('ind' in request.GET) and request.GET['ind'].strip():
         query_ind = request.GET['ind']
@@ -59,3 +65,21 @@ def joven(request):
         {"counties": counties,
         "categories": categories,
         "indicators": indicators})
+
+
+
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            send_mail(
+                cd['subject'],
+                cd['message'],
+                cd.get('email', 'noreply@example.com'),
+                ['noreply@email.com'],
+            )
+            return HttpResponseRedirect('/contact/thanks/')
+    else:
+        form = ContactForm()
+    return render(request, 'pages/contact.html', {'form': form})

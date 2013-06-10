@@ -9,6 +9,8 @@ urlpatterns = patterns('',
     url(r'^$', 'pages.views.home', name='home'),
     url(r'^joven/$', 'pages.views.joven', name='joven'),
     url(r'^search/$', 'pages.views.search'),
+
+    url(r'^contact/$', 'pages.views.contact'),
     # url(r'^techsummitpr/', include('techsummitpr.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

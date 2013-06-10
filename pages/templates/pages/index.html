@@ -3,44 +3,50 @@
 {% block css %}
 {{ block.super }}
 
-{% endblock css %}
+<style>
+#map{ text-align:center; width:"100%"; background-color: #daf1fa; margin-top:200px; padding: 50px 0;}
 
+#puebloname{position: relative;bottom: 50px;right: 80px;font-size: 72px;text-align: right;opacity: 0.25;margin: 0;}
+</style>
+{% endblock css %}
 {% block main %}
 
 
 {% include "pages/header.html" %}
 {% include "pages/pagetitle.html" %}
 
+<br />
 
-<section>
-    Select parameters &nbsp;
-    <br />
-<form method="get" action="/search/">
-<!--select>
-    <option>counties</option>
-    {% for c in counties %}
-    <option value="{{ c.id }}">{{ c.county }}</option>
-    {% endfor %}
-</select-->
-
-<select name="cat" >
-    <option>Categories</option>
-    {% for c in categories %}
-    <option value="{{ c.id }}">{{ c.category }}</option>
-    {% endfor %}
-</select>
-
-<select name="ind" >
-    <option>Indicators</option>
-    {% for c in indicators %}
-    {% if c.category_id == "4" %}
-        <option value="{{ c.id }}">{{ c.indicator }}</option>
-    {% endif %}
-    {% endfor %}
-</select>
-<input type="submit" value="Submit" />
-</form>
+<section id="content">
     <div id="map"></div>
+
+    <p id="puebloname">&nbsp;</p>
+    <p>
+    Example Report <br />
+    <a href="/joven">Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</a>
+    </p>
+
+<form method="get" action="/search/">
+
+<div class="seldir">
+    <label> Educacion Indicators</label> &nbsp;
+    <br />
+
+
+    <select name="indicators" >
+        {% for c in indicators %}
+        {% if c.category_id == "4" %}
+            <option value="{{ c.id }}">{{ c.indicator }}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+<br /><br />
+    <input type="submit" value="Submit" />
+</div>
+
+
+</form>
+
 
 {% if valuesfordisplay %}
 
@@ -56,11 +62,19 @@
         (pueblo.fips.length == 2 ? ("0" + pueblo.fips) : pueblo.fips);
      pop_datamap[fips_3digits] = pueblo.population;
    });
-   var pop_map = new AtlasPR({node: node, size: "medium", tiles: 'pueblos',
-    labels: true, on_ready: function(){
-     // paint after drawing async.
-     pop_map.encode_quan(pop_datamap);
-   }});
+
+    var hover = function hover(info, path){
+        d3.select("#puebloname").text(info.properties.NAME);
+        //d3.select(path).style("fill", "#EEEEEE");
+    };
+
+   var pop_map = new AtlasPR({node: node, size: "large", tiles: 'pueblos',
+    labels: true,
+    on_ready: function(){
+        // paint after drawing async.
+        pop_map.encode_quan(pop_datamap);
+    }, events: {on_mouseover: hover}
+    });
  });
   </script>
 
@@ -68,7 +82,15 @@
 
   <script type='text/javascript'>
     var node = document.getElementById("map");
-    new AtlasPR({node: node, tiles: ['pueblos'], labels: true});
+
+    var hover = function hover(info, path){
+        d3.select("#puebloname").text(info.properties.NAME);
+    };
+
+    new AtlasPR({
+        node: node, tiles: ['pueblos'], size: "large",
+        events: {on_mouseover: hover}
+    });
   </script>
 
 {% endif %}
