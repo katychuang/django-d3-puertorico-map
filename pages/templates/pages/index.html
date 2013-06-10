@@ -4,7 +4,7 @@
 {{ block.super }}
 
 <style>
-#map{ text-align:center; width:"100%"; background-color: #f0f3fe; padding: 50px 0;}
+#map{ text-align:center; width:"100%";  padding: 50px 0;}
 
 #puebloname{position: relative;bottom: 50px;right: 80px;font-size: 72px;text-align: right;opacity: 0.25;margin: 0;}
 </style>
@@ -27,14 +27,14 @@
 
     <p id="puebloname">&nbsp;</p>
 
-    <p>Example Report: <br />
+    <h1>Interactive Reports: </h1>
     <a href="/joven">Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</a>
-    </p>
+
 
     <!--Dropdown of Indicators-->
     <form method="get" action="/search/">
         <div class="seldir">
-            <label> Educacion Indicators</label> &nbsp;<br />
+            <label> Estadísticas de la educación </label>
 
             <select name="indicators" >
                 <option>-- Indicator --</option>
@@ -44,10 +44,10 @@
                 {% endif %}
                 {% endfor %}
             </select>
-            <br /><br />
-            <input type="submit" value="Submit" />
+            <input type="submit" value="ver" />
         </div>
     </form>
+    <p>&nbsp;</p>
 </div>
 
 {% if valuesfordisplay %}
@@ -97,7 +97,7 @@ Sorted By Value: <br>
   // change the argument to match your id
  var node = document.getElementById("map");
 
- d3.json("/static/js/munidata.json", function(data){
+ d3.json("{{ valuesfordisplay }}", function(data){
    var pop_datamap = {};
    //use FIPS code as key
     data.forEach(function(pueblo){
@@ -112,7 +112,7 @@ Sorted By Value: <br>
         //d3.select(path).style("fill", "#EEEEEE");
     };
 
-   var pop_map = new AtlasPR({node: node, size: "large", tiles: 'pueblos',
+   var pop_map = new AtlasPR({node: node, size: "custom1", tiles: 'pueblos',
     labels: true,
     on_ready: function(){
         // paint after drawing async.
@@ -135,7 +135,7 @@ Sorted By Value: <br>
     };
 
     new AtlasPR({
-        node: node, tiles: ['pueblos'], size: "large",
+        node: node, tiles: ['pueblos'], size: "custom1",
         events: {on_mouseover: hover}
     });
 

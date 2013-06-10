@@ -3,17 +3,16 @@
 {% block css %}
 {{ block.super }}
 <style type="text/css">
-.info {width:500px; vertical-align:text-top; height:450px;}
-.b {width:600px; height:350px; padding-left:120px;}
-#map{margin-top:70px;}
-.xlabel{font-weight: bold;font-size: 13pt}
-#puebloname{position: relative;
-bottom: 100px;
-right: 100px;
-font-size: 72px;
-text-align: right;
-opacity: 0.25;
-margin: 0;}
+.info {width:320px; vertical-align:text-top; height:500px;}
+    #chart { height:450px;}
+    .xlabel{font-weight: bold;}
+
+.b {width:550px; height:500px; padding-left:40px;}
+    #map{margin-top:70px;}
+
+
+
+#puebloname{position: relative; bottom:250px;right: 100px;font-size: 72px;text-align: right; opacity: 0.25;margin: 0;}
 </style>
 
   <link href="/static/js/nvd3/nv.d3.css" rel="stylesheet" type="text/css">
@@ -31,43 +30,28 @@ margin: 0;}
 
 
 {% include "pages/header.html" %}
+{% include "pages/pagetitle.html" %}
 
-<section id="pagetitle-wrapper" style="background-color: #00b7de;">
-  <div class="row">
-      <div class="twelve columns">
-          <h3>Estadísticas</h3><p>Estadísticas de Juventud de Puerto Rico, 2013<br />Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</p>
+<section>
+<div class="row">
+    <h1> &nbsp; </h1>
 
-
-      </div>
-
-      <div class="twelve columns">
-          <div id="breadcrumb">
-                <ul>
-                   <li class="bread-txt">
-                    <a href="/">
-                        <img src="http://pixelogic.co/c/bgc/www/wp-content/themes/aeolus/images/breadcrumb_home.png" alt=""></a></li>  <li class="current-page">Estadísticas
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-
-<table width="100%" border="0">
-<tr>
-    <td class="b" >
-        <h1>Puerto Rico</h1>
-        <p>Haz click, el nombre del municipio y las estadísticas aparecer&#225;n a la izquierda.</p>
-        <div id="map"></div>
-        <p id="puebloname">&nbsp; </p>
-    </td>
-</tr>
-<tr><td class="info" align="center">
     <h1 id="name"></h1>
-    <div id="chart"><svg></svg></div>
-</td></tr>
-</table>
-
+    <p>Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</p>
+    <table width="100%" border="0">
+        <tr>
+            <td class="info" align="center">
+                <div id="chart"><svg></svg></div>
+            </td>
+            <td class="b" >
+                <p>Haz click, el nombre del municipio y las estadísticas aparecer&#225;n a la izquierda.</p>
+                <div id="map"></div>
+                <p id="puebloname">San Juan</p>
+            </td>
+        </tr>
+    </table>
+</div>
+</section>
 <script>
 function bunny(x){
     nv.addGraph(function() {
@@ -90,7 +74,7 @@ function bunny(x){
       .append("text")
       .attr("class", "xlabel")
       .attr("text-anchor", "end")
-      .attr("x", "550")
+      .attr("x", "230")
       .attr("y", "400")
       .text("Grade Level");
 
@@ -104,7 +88,7 @@ function bunny(x){
 
 $.getJSON('/static/js/edu.json', function(response){
   // response is a variable containing the JSON object, if it fetched it successfully
-    $("#name").html("<b>Estadísticas por Pueblos: San Juan</b>");
+    $("#name").html("<b>Estadísticas Interactivos por pueblos de San Juan</b>");
     bunny(response["San Juan"]);
     current = null;
     last = null;
@@ -112,11 +96,10 @@ $.getJSON('/static/js/edu.json', function(response){
 
     var hover = function hover(info, path){
         d3.select("#puebloname").text(info.properties.NAME);
-        //d3.select(path).style("fill", "#EEEEEE");
     };
 
     var click = function click(object, id){
-        $("#name").html("<b>Estadísticas por Pueblos: "+object.properties.NAME+"</b>");
+        $("#name").html("<b>Estadísticas Interactivos por pueblos de "+object.properties.NAME+"</b>");
 
         //coloring only selected region
         d3.selectAll("svg").selectAll("path").style("fill", "white");
@@ -124,7 +107,7 @@ $.getJSON('/static/js/edu.json', function(response){
         bunny(response[object.properties.NAME]);
         };
 
-    new AtlasPR({node: my_node, size:400, tiles: "pueblos",
+    new AtlasPR({node: my_node, size:"small", tiles: "pueblos",
         events : {
             on_click: click,
             on_mouseover: hover
