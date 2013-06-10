@@ -35,21 +35,23 @@ def search(request):
 
     indicators = simplejson.load(urllib.urlopen(api_url+"indicatorsList"))
 
-    query_cat = ''
+    indicatorName = ''
     query_ind = ''
     filtered_ind = ''
     found_entries = None
 
-    if ('ind' in request.GET) and request.GET['ind'].strip():
-        query_ind = request.GET['ind']
+    if ('indicators' in request.GET) and request.GET['indicators'].strip():
+        query_ind = request.GET['indicators']
         filtered_ind = simplejson.load(urllib.urlopen(api_url + "indicators?id=" + query_ind))
-
+        print api_url + "indicators?id=" + query_ind
+        indicatorName = filtered_ind[1]['indicator']
 
     return render_to_response('pages/index.html',
                               {"counties": counties,
                                 "categories": categories,
                                 "indicators": indicators,
-                                "valuesfordisplay": filtered_ind},
+                                "valuesfordisplay": filtered_ind,
+                                "indicatorName": indicatorName},
                               context_instance=RequestContext(request))
 
 def joven(request):

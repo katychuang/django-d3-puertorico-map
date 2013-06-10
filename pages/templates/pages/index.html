@@ -49,7 +49,22 @@
 
 
 {% if valuesfordisplay %}
-
+<b>{{ indicatorName }}</b>
+<table>
+    <tr>
+       <td>county_id</td>
+       <td>county</td>
+       <td>year</td>
+       <td>value</td></tr>
+    {% for v in valuesfordisplay %}
+    <tr>
+       <td>{{ v.county_id }}</td>
+       <td>{{ v.county }}</td>
+       <td>{{ v.year }}</td>
+       <td>{{ v.value }}</td>
+    </tr>
+   {% endfor %}
+</table>
   <script type='text/javascript'>
   // change the argument to match your id
  var node = document.getElementById("map");
@@ -75,6 +90,8 @@
         pop_map.encode_quan(pop_datamap);
     }, events: {on_mouseover: hover}
     });
+
+
  });
   </script>
 
