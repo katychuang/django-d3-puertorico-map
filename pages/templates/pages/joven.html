@@ -7,6 +7,13 @@
 .b {width:600px; height:350px; padding-left:120px;}
 #map{margin-top:70px;}
 .xlabel{font-weight: bold;font-size: 13pt}
+#puebloname{position: relative;
+bottom: 100px;
+right: 100px;
+font-size: 72px;
+text-align: right;
+opacity: 0.25;
+margin: 0;}
 </style>
 
   <link href="/static/js/nvd3/nv.d3.css" rel="stylesheet" type="text/css">
@@ -29,10 +36,9 @@
 <section id="pagetitle-wrapper" style="background-color: #00b7de;">
   <div class="row">
       <div class="twelve columns">
-          <h3>Estadísticas</h3><p>Estadisticas de Juventud de Puerto Rico, 2013<br />Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</p>
+          <h3>Estadísticas</h3><p>Estadísticas de Juventud de Puerto Rico, 2013<br />Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</p>
 
-          <p>Haz click, el nombre del municipio y las estadisticas aparecer&#225;n
-a la izquierda.</p>
+
       </div>
 
       <div class="twelve columns">
@@ -50,7 +56,12 @@ a la izquierda.</p>
 
 <table width="100%" border="0">
 <tr>
-    <td class="b" ><div id="map"></div></td>
+    <td class="b" >
+        <h1>Puerto Rico</h1>
+        <p>Haz click, el nombre del municipio y las estadísticas aparecer&#225;n a la izquierda.</p>
+        <div id="map"></div>
+        <p id="puebloname">&nbsp; </p>
+    </td>
 </tr>
 <tr><td class="info" align="center">
     <h1 id="name"></h1>
@@ -94,23 +105,32 @@ function bunny(x){
 
 $.getJSON('/static/js/edu.json', function(response){
   // response is a variable containing the JSON object, if it fetched it successfully
-    $("#name").html("<strong>Pueblos: San Juan</strong>");
+    $("#name").html("<b>Estadísticas por Pueblos: San Juan</b>");
     bunny(response["San Juan"]);
     current = null;
     last = null;
     my_node = document.getElementById("map");
 
-    new AtlasPR({node: my_node, size:350, tiles: "pueblos",
-        events : {on_click: function(object, id){
-            $("#name").html("<strong>Pueblos: "+object.properties.NAME+"</strong>");
+    var hover = function hover(info, path){
+        d3.select("#puebloname").text(info.properties.NAME);
+        //d3.select(path).style("fill", "#EEEEEE");
+    };
 
-            //coloring only selected region
-            d3.selectAll("svg").selectAll("path").style("fill", "white");
-            d3.select(id).style("fill", "red");
+    var click = function click(object, id){
+        $("#name").html("<b>Estadísticas por Pueblos: "+object.properties.NAME+"</b>");
 
-            bunny(response[object.properties.NAME]);
+        //coloring only selected region
+        d3.selectAll("svg").selectAll("path").style("fill", "white");
+        d3.select(id).style("fill", "red");
+        bunny(response[object.properties.NAME]);
+        };
 
-        }}});
+    new AtlasPR({node: my_node, size:400, tiles: "pueblos",
+        events : {
+            on_click: click,
+            on_mouseover: hover
+        }
+    });
 });
 </script>
 
