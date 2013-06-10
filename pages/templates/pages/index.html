@@ -4,7 +4,7 @@
 {{ block.super }}
 
 <style>
-#map{ text-align:center; width:"100%"; background-color: #daf1fa; margin-top:200px; padding: 50px 0;}
+#map{ text-align:center; width:"100%"; background-color: #f0f3fe; padding: 50px 0;}
 
 #puebloname{position: relative;bottom: 50px;right: 80px;font-size: 72px;text-align: right;opacity: 0.25;margin: 0;}
 </style>
@@ -18,56 +18,85 @@
 <br />
 
 <section id="content">
+<div class="row">
+
+    <h1>&nbsp;<br />{{ indicatorName }}</h1>
+
+
     <div id="map"></div>
 
     <p id="puebloname">&nbsp;</p>
-    <p>
-    Example Report <br />
+
+    <p>Example Report: <br />
     <a href="/joven">Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</a>
     </p>
 
-<form method="get" action="/search/">
+    <!--Dropdown of Indicators-->
+    <form method="get" action="/search/">
+        <div class="seldir">
+            <label> Educacion Indicators</label> &nbsp;<br />
 
-<div class="seldir">
-    <label> Educacion Indicators</label> &nbsp;
-    <br />
-
-
-    <select name="indicators" >
-        {% for c in indicators %}
-        {% if c.category_id == "4" %}
-            <option value="{{ c.id }}">{{ c.indicator }}</option>
-        {% endif %}
-        {% endfor %}
-    </select>
-<br /><br />
-    <input type="submit" value="Submit" />
+            <select name="indicators" >
+                <option>-- Indicator --</option>
+                {% for c in indicators %}
+                {% if c.category_id == "4" %}
+                    <option value="{{ c.id }}">{{ c.indicator }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            <br /><br />
+            <input type="submit" value="Submit" />
+        </div>
+    </form>
 </div>
 
-
-</form>
-
-
 {% if valuesfordisplay %}
-<b>{{ indicatorName }}</b>
-<table>
-    <tr>
-       <td>county_id</td>
-       <td>county</td>
-       <td>year</td>
-       <td>value</td></tr>
+<div class="row">
+<h1>{{ indicatorName }}</h1>
+<table><tr>
+    <td>
+        Sorted By County Name: <br>
+<table id="myTable" border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+       <td width="200">county</td>
+       <td width="100">value</td></tr>
+   </thead>
+    <tbody>
     {% for v in valuesfordisplay %}
-    <tr>
-       <td>{{ v.county_id }}</td>
+    <tr id="{{ v.county_id }}">
        <td>{{ v.county }}</td>
-       <td>{{ v.year }}</td>
        <td>{{ v.value }}</td>
     </tr>
+
    {% endfor %}
+   </tbody>
 </table>
-  <script type='text/javascript'>
+</td><td width="20">&nbsp;</td><td>
+Sorted By Value: <br>
+<table id="myTable" border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+       <td width="200">county</td>
+       <td width="100">value</td></tr>
+   </thead>
+    <tbody>
+    {% for k,v in sorted %}
+    <tr id="{{ k }}">
+       <td>{{ k }}</td>
+       <td>{{ v }}</td>
+    </tr>
+
+   {% endfor %}
+   </tbody>
+</table>
+</td></tr>
+</table>
+<script type='text/javascript'>
+
   // change the argument to match your id
  var node = document.getElementById("map");
+
  d3.json("/static/js/munidata.json", function(data){
    var pop_datamap = {};
    //use FIPS code as key
@@ -91,8 +120,9 @@
     }, events: {on_mouseover: hover}
     });
 
-
  });
+
+
   </script>
 
 {% else %}
@@ -108,10 +138,13 @@
         node: node, tiles: ['pueblos'], size: "large",
         events: {on_mouseover: hover}
     });
+
+    function transform(attrName) {
+    }
   </script>
 
 {% endif %}
-
+</div>
 </section>
 
 {% include "pages/footer.html" %}
