@@ -4,6 +4,8 @@
 
 Completion of high school is important for employability and longevity. People who received their high school diploma or GED were 37.5 percent less likely to be unemployed than others according to the [Bureau of Labor Statistics](http://www.bls.gov/ooh/Management/Sales-managers.htm). In addition, individuals who do not receive a diploma are more likely to: require public assistance; have health problems; and engage in criminal activity.
 
+Our project works to convert data into actionable insights for the policy decision makers.
+
 
 #Data Joven Vizualizations
 
