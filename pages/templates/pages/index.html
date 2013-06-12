@@ -30,9 +30,9 @@
         <h1>Interactive Reports: </h1>
         <a href="/joven">Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</a><br/><br />
 
-        <a href="/enrollment">Grade School Enrollment (%)</a><br/><br />
+        <a href="/enrollment">School Enrollment (%)</a><br/><br />
 
-        <a href="/college">College Enrollment (%)</a><br/><br />
+        <!--a href="/college">College Enrollment (%)</a><br/><br /-->
 
         <a href="/workforce">Workforce education metrics(%)</a><br/><br />
 
@@ -60,49 +60,28 @@
 {% if valuesfordisplay %}
 
     <h1>{{ indicatorName }}</h1>
-    <table><tr>
-        <td>
-            Sorted By County Name: <br>
-    <table id="myTable" border="1" cellpadding="5" cellspacing="0">
-        <thead>
-            <tr>
-           <td width="200">county</td>
-           <td width="100">value</td></tr>
-       </thead>
-        <tbody>
-        {% for v in valuesfordisplay %}
-        <tr id="{{ v.county_id }}">
-           <td>{{ v.county }}</td>
-           <td>{{ v.value }}</td>
-        </tr>
 
-       {% endfor %}
-       </tbody>
-    </table>
-    </td><td width="20">&nbsp;</td><td>
-    Sorted By Value: <br>
-    <table id="myTable" border="1" cellpadding="5" cellspacing="0">
-        <thead>
-            <tr>
-           <td width="200">county</td>
-           <td width="100">value</td></tr>
-       </thead>
-        <tbody>
-        {% for k,v in sorted %}
-        <tr id="{{ k }}">
-           <td>{{ k }}</td>
-           <td>{{ v }}</td>
-        </tr>
+    Sorted By County Name: <br>
 
+    <table id="myTable" border="1" cellpadding="5" cellspacing="0">
+        {% for row in valuesfordisplay %}
+        <tr>
+            {% for col in row %}
+           <td>{{ col }}</td>
+        {% endfor %}
+        </tr>
        {% endfor %}
-       </tbody>
-    </table>
-    </td></tr>
     </table>
 </div>
 
+</section>
 
 <script type='text/javascript'>
+    {% autoescape off %}
+    //var obj = jQuery.parseJSON('{{ jsondata }}');
+    {% endautoescape %}
+
+     //var node = {{ jsondata }};
 
   // change the argument to match your id
  var node = document.getElementById("map");
@@ -159,8 +138,7 @@
   </script>
 
 {% endif %}
-</div>
-</section>
+
 
 {% include "pages/footer.html" %}
 
