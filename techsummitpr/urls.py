@@ -10,6 +10,10 @@ urlpatterns = patterns('',
     url(r'^joven/$', 'pages.views.joven', name='joven'),
     url(r'^search/$', 'pages.views.search'),
 
+    url(r'^enrollment/$', 'pages.views.enrollment'),
+    url(r'^college/$', 'pages.views.college'),
+    url(r'^workforce/$', 'pages.views.workforce'),
+
     url(r'^contact/$', 'pages.views.contact'),
     # url(r'^techsummitpr/', include('techsummitpr.foo.urls')),
 

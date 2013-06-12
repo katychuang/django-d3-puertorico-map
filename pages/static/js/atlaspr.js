@@ -29,7 +29,7 @@ var AtlasPR = klass(function (options) {
       width: 550
     },
     "custom1": {
-      width: 750
+      width: 780
     },
     "medium": {
       width: 960
