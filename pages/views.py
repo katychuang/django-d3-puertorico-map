@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
 from django.db.models import Q
 from django.template import RequestContext
-import simplejson, urllib
+import simplejson, urllib, json
 from operator import itemgetter
 
 #for contact form
@@ -82,17 +82,6 @@ def joven(request):
     return render_to_response("pages/joven.html", context)
 
 """
-<option value="58"><font><font>Children between 3 and 4 years who are not enrolled (%)</font></font></option>
-
-<option value="59"><font><font>Children not enrolled in school (%)</font></font></option>
-
-<option value="60"><font><font>Youths 16 to 19 years are not enrolled nor school diploma (%)</font></font></option>
-
-<option value="61"><font><font>Children 5 to 17 years who speak Spanish and English is "less than very well" (%)</font></font></option>
-
-<option value="62"><font><font>Children who speak another language at home other than English and Spanish (%)</font></font></option>
-
-<option value="63"><font><font>Youth aged 18 to 24 enrolled in or completed college </font></font></option>
 
 <option value="64"><font><font>Educational Attainment in the 25 and older - Less than ninth grade (%)</font></font></option>
 
@@ -115,17 +104,141 @@ def joven(request):
 """
 
 def enrollment(request):
-    context = {}
+    api_url = "http://www.pixelogicpr.com/PRYouthAPI/public/api/indicators?id="
+
+    # Children not enrolled in school (%)
+    noenroll_all =api_url+"59"
+
+    #Children between 3 and 4 years who are not enrolled (%)
+    noenroll_3_4 = api_url+"58"
+
+    #Youths 16 to 19 years are not enrolled nor school diploma (%)
+    noenroll_teen = api_url+"60"
+
+    # Youth aged 18 to 24 enrolled in or completed college
+    noenroll_adult = api_url+"63"
+
+    sortedValues = {}
+    indicatorName = []
+
+    ind1 = simplejson.load(urllib.urlopen(noenroll_all))
+    ind2 = simplejson.load(urllib.urlopen(noenroll_3_4))
+    ind3 = simplejson.load(urllib.urlopen(noenroll_teen))
+    ind4 = simplejson.load(urllib.urlopen(noenroll_adult))
+
+    newTable = []
+
+    for i in xrange(78): #height
+     row = []
+     for j in xrange(5): #width
+      row.append('')
+     newTable.append(row)
+
+    for item in ind1:
+        sortedValues[item['county']] = item['value']
+
+
+    for i in xrange(77):
+        #print ind1[i]
+        county = int(ind1[i]['county_id'])
+        val1 = ind1[i]['value']
+
+        #print ind1[i]['county_id'] + ind1[i]['county']
+
+        newTable[county][0] = unicode(ind1[i]['county']) #[u'A\xf1asco
+        newTable[county][1] = ind1[i]['value']
+        newTable[county][2] = ind2[i]['value']
+        newTable[county][3] = ind3[i]['value']
+        newTable[county][4] = ind4[i]['value']
+
+        valuesfordisplay = json.dumps(newTable)
+
+    newTable[0][0] = "county"
+    newTable[0][1] = "Children not enrolled in school"
+    newTable[0][2] = "Children between 3 and 4 years who are not enrolled "
+    newTable[0][3] = "Youths 16 to 19 years are not enrolled nor school diploma"
+    newTable[0][4] = "Youth aged 18 to 24 enrolled in or completed college"
+
+    #print newTable
+
+    the_dump=json.dumps("['foo', {'bar':['baz', null, 1.0, 2]}]")
+
+    context = {"counties": "",
+                "indicators": "",
+                "valuesfordisplay": newTable,
+                "jsondata": newTable,
+                "sorted": sorted(sortedValues.iteritems(), key=itemgetter(1), reverse=True),
+                "jsonURL": api_url,
+                "indicatorName": "% of school enrollment"}
 
 
     #pass to template
-    return render_to_response("pages/joven.html", context)
+    return render_to_response("pages/index.html", context)
+
+
 
 def college(request):
-    context = {}
+    api_url = "http://www.pixelogicpr.com/PRYouthAPI/public/api/indicators?id="
+    # Children not enrolled in school (%)
+    noenroll_all =api_url+"59"
+
+
+    sortedValues = {}
+    indicatorName = []
+
+    ind1 = simplejson.load(urllib.urlopen(noenroll_all))
+    ind2 = simplejson.load(urllib.urlopen(noenroll_3_4))
+    ind3 = simplejson.load(urllib.urlopen(noenroll_teen))
+    ind4 = simplejson.load(urllib.urlopen(noenroll_adult))
+
+    newTable = []
+
+    for i in xrange(78): #height
+     row = []
+     for j in xrange(5): #width
+      row.append('')
+     newTable.append(row)
+
+    for item in ind1:
+        sortedValues[item['county']] = item['value']
+
+
+    for i in xrange(77):
+        #print ind1[i]
+        county = int(ind1[i]['county_id'])
+        val1 = ind1[i]['value']
+
+        #print ind1[i]['county_id'] + ind1[i]['county']
+
+        newTable[county][0] = unicode(ind1[i]['county']) #[u'A\xf1asco
+        newTable[county][1] = ind1[i]['value']
+        newTable[county][2] = ind2[i]['value']
+        newTable[county][3] = ind3[i]['value']
+        newTable[county][4] = ind4[i]['value']
+
+        valuesfordisplay = json.dumps(newTable)
+
+    newTable[0][0] = "county"
+    newTable[0][1] = "Children not enrolled in school"
+    newTable[0][2] = "Children between 3 and 4 years who are not enrolled "
+    newTable[0][3] = "Youths 16 to 19 years are not enrolled nor school diploma"
+    newTable[0][4] = "Youth aged 18 to 24 enrolled in or completed college"
+
+    #print newTable
+
+    the_dump=json.dumps("['foo', {'bar':['baz', null, 1.0, 2]}]")
+
+    context = {"counties": "",
+                "indicators": "",
+                "valuesfordisplay": [["Country", "Group 1", "Group 2", "Group 3", "Group 4"], ["", "", "", "", ""]],
+                "jsondata": newTable,
+                "sorted": sorted(sortedValues.iteritems(), key=itemgetter(1), reverse=True),
+                "jsonURL": api_url,
+                "indicatorName": "% of college enrollment"}
+
 
     #pass to template
-    return render_to_response("pages/joven.html", context)
+    return render_to_response("pages/index.html", context)
 
 def workforce(request):
 
@@ -133,33 +246,88 @@ def workforce(request):
 
     #metrics
     # % Of people in the workforce with lower education than fourth year (25 - 64 years)
-    under4th = apiurl+"73"
+    under4th = api_url+"73"
 
     #% Of people in the workforce with education fourth year (25 - 64 years)
-    fourth = apiurl+"74"
+    fourth = api_url+"74"
 
     #% Of people in the workplace with some years in the univ or an associate degree (25 - 64 years)
-    assoc = apiurl+"75"
+    assoc = api_url+"75"
 
     #% Of people in the workforce with degree or higher (25 - 64 years)
-    degre = apiurl+"76"
+    degre = api_url+"76"
+
+    sortedValues = {}
+    indicatorName = []
+
+    ind1 = simplejson.load(urllib.urlopen(under4th))
+    indicatorName.append(ind1[1]['indicator'])
+
+    ind2 = simplejson.load(urllib.urlopen(fourth))
+    indicatorName.append(ind2[1]['indicator'])
+
+    ind3 = simplejson.load(urllib.urlopen(assoc))
+    indicatorName.append(ind3[1]['indicator'])
+
+    ind4 = simplejson.load(urllib.urlopen(degre))
+    indicatorName.append(ind4[1]['indicator'])
+
+    newTable = []
+
+    for i in xrange(78): #height
+     row = []
+     for j in xrange(5): #width
+      row.append('')
+     newTable.append(row)
+
+    for item in ind1:
+        sortedValues[item['county']] = item['value']
 
 
+    for i in xrange(77):
+        #print ind1[i]
+        county = int(ind1[i]['county_id'])
+        val1 = ind1[i]['value']
 
-    filtered_ind = simplejson.load(urllib.urlopen(api_url + "indicators?id=" + query_ind))
+        #print ind1[i]['county_id'] + ind1[i]['county']
 
-    indicatorName = filtered_ind[1]['indicator']
+        newTable[county][0] = unicode(ind1[i]['county']) #[u'A\xf1asco
+        newTable[county][1] = ind1[i]['value']
+        newTable[county][2] = ind2[i]['value']
+        newTable[county][3] = ind3[i]['value']
+        newTable[county][4] = ind4[i]['value']
+
+        valuesfordisplay = json.dumps(newTable)
+
+    newTable[0][0] = "county"
+    newTable[0][1] = "under 4th year"
+    newTable[0][2] = "4th year"
+    newTable[0][3] = "some college"
+    newTable[0][4] = "university degree"
+
+    #print newTable
+
+    the_dump=json.dumps("['foo', {'bar':['baz', null, 1.0, 2]}]")
 
     context = {"counties": "",
                 "indicators": "",
-                "valuesfordisplay": filtered_ind,
+                "valuesfordisplay": newTable,
+                "jsondata": valuesfordisplay,
                 "sorted": sorted(sortedValues.iteritems(), key=itemgetter(1), reverse=True),
                 "jsonURL": api_url,
-                "indicatorName": indicatorName}
+                "indicatorName": "% of people in the workforce with education"}
 
 
     #pass to template
     return render_to_response("pages/index.html", context)
+
+
+# Speaking both Languages
+#Children 5 to 17 years who speak Spanish and English is "less than very well" (%)
+#biling = apiurl+"61"
+
+#Children who speak another language at home other than English and Spanish (%)
+#biling = apiurl+"62"
 
 
 
