@@ -102,6 +102,31 @@ def joven(request):
 <option value="72"><font><font>Educational Attainment in the group 25-34 years old - Bachelor or more (%)</font></font></option>
 
 """
+#latin encoding
+# http://writeonly.wordpress.com/2008/12/10/the-hassle-of-unicode-and-getting-on-with-it-in-python/
+def decoder(str):
+    # try:
+    #     text = unicode(text, 'utf-8')
+    #     return text
+    # except TypeError:
+    #     return unicode(text, 'latin-1')
+
+    u = None
+    # we could add more encodings here, as warranted.
+    encodings = ('ascii', 'utf8', 'latin1')
+    for enc in encodings:
+        if u:  break
+        try:
+            u = unicode(str, enc)
+        except UnicodeDecodeError:
+            if verbose: print "error for %s into encoding %s" % (str, enc)
+            pass
+    if not u:
+        u = unicode(str, errors='replace')
+        if verbose:  print "using replacement character for %s" % str
+
+    return u
+
 
 def enrollment(request):
     api_url = "http://www.pixelogicpr.com/PRYouthAPI/public/api/indicators?id="
@@ -145,7 +170,7 @@ def enrollment(request):
 
         #print ind1[i]['county_id'] + ind1[i]['county']
 
-        newTable[county][0] = unicode(ind1[i]['county']) #[u'A\xf1asco
+        newTable[county][0] = ind1[i]['county'].encode('ascii', 'ignore')
         newTable[county][1] = ind1[i]['value']
         newTable[county][2] = ind2[i]['value']
         newTable[county][3] = ind3[i]['value']
@@ -161,12 +186,27 @@ def enrollment(request):
 
     #print newTable
 
-    the_dump=json.dumps("['foo', {'bar':['baz', null, 1.0, 2]}]")
+    jsondata = {}
+    values = []
+    for row in newTable:
+        # clear data structures
+        v = {}
+        values = []
+
+        values.append({"value": row[1], "label": "a"})
+        values.append({"value": row[2], "label": "b"})
+        values.append({"value": row[3], "label": "c"})
+        values.append({"value": row[4], "label": "d"})
+
+        v["values"] = values
+        jsondata[row[0]] = [v]
+
+    #print simplejson.dumps(jsondata)
 
     context = {"counties": "",
                 "indicators": "",
                 "valuesfordisplay": newTable,
-                "jsondata": newTable,
+                "jsondata": "/static/js/enrollment.json",
                 "sorted": sorted(sortedValues.iteritems(), key=itemgetter(1), reverse=True),
                 "jsonURL": api_url,
                 "indicatorName": "% of school enrollment"}
@@ -297,7 +337,7 @@ def workforce(request):
         newTable[county][3] = ind3[i]['value']
         newTable[county][4] = ind4[i]['value']
 
-        valuesfordisplay = json.dumps(newTable)
+        #valuesfordisplay = json.dumps(newTable)
 
     newTable[0][0] = "county"
     newTable[0][1] = "under 4th year"
@@ -305,14 +345,28 @@ def workforce(request):
     newTable[0][3] = "some college"
     newTable[0][4] = "university degree"
 
-    #print newTable
 
-    the_dump=json.dumps("['foo', {'bar':['baz', null, 1.0, 2]}]")
+    jsondata = {}
+    values = []
+    for row in newTable:
+        # clear data structures
+        v = {}
+        values = []
+
+        values.append({"value": row[1], "label": "a"})
+        values.append({"value": row[2], "label": "b"})
+        values.append({"value": row[3], "label": "c"})
+        values.append({"value": row[4], "label": "d"})
+
+        v["values"] = values
+        jsondata[row[0]] = [v]
+
+    #print simplejson.dumps(jsondata)
 
     context = {"counties": "",
                 "indicators": "",
                 "valuesfordisplay": newTable,
-                "jsondata": valuesfordisplay,
+                "jsondata": "/static/js/workforce.json",
                 "sorted": sorted(sortedValues.iteritems(), key=itemgetter(1), reverse=True),
                 "jsonURL": api_url,
                 "indicatorName": "% of people in the workforce with education"}

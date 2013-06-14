@@ -4,10 +4,30 @@
 {{ block.super }}
 
 <style>
-#map{ text-align:center; width:"100%";  padding: 50px 0;}
+/*#map{ text-align:center; width:"100%";  padding: 50px 0;}
+*/
 
 #puebloname{position: relative;bottom: 50px;right: 80px;font-size: 72px;text-align: right;opacity: 0.25;margin: 0;}
+
+
+.info {width:320px; vertical-align:text-top; height:300px;}
+    #chart { height:450px;}
+    .xlabel{font-weight: bold;}
+
+.b {width:550px; height:300px; padding-left:40px;}
+    #map{margin-top:70px;}
+
 </style>
+
+  <link href="/static/js/nvd3/nv.d3.css" rel="stylesheet" type="text/css">
+  <script src="/static/js/nvd3/nv.d3.min.js"></script>
+  <script type="text/javascript" src="/static/js/nvd3/utils.js"></script>
+  <script src="/static/js/nvd3/tooltip.js"></script>
+  <script src="/static/js/nvd3/utils.js"></script>
+  <script src="/static/js/nvd3/models/axis.js"></script>
+  <script src="/static/js/nvd3/models/discreteBar.js"></script>
+  <script src="/static/js/nvd3/models/discreteBarChart.js"></script>
+
 {% endblock css %}
 {% block main %}
 
@@ -22,10 +42,25 @@
 
         <h1 id="sectiontitle">&nbsp;<br />{{ indicatorName }}</h1>
 
+        {% if valuesfordisplay %}
+        <h1 id="name"></h1>
+        <p>Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</p>
 
+        <table width="100%" border="0">
+        <tr>
+            <td class="info" align="center">
+                <div id="chart"><svg></svg></div>
+            </td>
+            <td class="b" >
+                <p>Haz click, el nombre del municipio y las estadísticas aparecer&#225;n a la izquierda.</p>
+                <div id="map"></div>
+                <p id="puebloname">San Juan</p>
+            </td>
+        </tr>
+        </table>
+        {% else %}
         <div id="map"></div>
-
-        <p id="puebloname">&nbsp;</p>
+        {% endif %}
 
         <h1>Interactive Reports: </h1>
         <a href="/joven">Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</a><br/><br />
@@ -36,33 +71,16 @@
 
         <a href="/workforce">Workforce education metrics(%)</a><br/><br />
 
-
-        <!--Dropdown of Indicators-->
-        <!--form method="get" action="/search/">
-            <div class="seldir">
-                <label> Estadísticas de la educación </label>
-
-                <select name="indicators" >
-                    <option value="58">-- Indicator --</option>
-                    {% for c in indicators %}
-                    {% if c.category_id == "4" %}
-                        <option value="{{ c.id }}">{{ c.indicator }}</option>
-                    {% endif %}
-                    {% endfor %}
-                </select>
-                <input type="submit" value="ver" />
-            </div>
-        </form>
-        <p>&nbsp;</p-->
     </div>
+
 
 <div class="row">
 {% if valuesfordisplay %}
-
-    <h1>{{ indicatorName }}</h1>
+    <hr>
+    <h1> &nbsp; </h1>
+    <h1>{{ indicatorName }} (Details) </h1>
 
     Sorted By County Name: <br>
-
     <table id="myTable" border="1" cellpadding="5" cellspacing="0">
         {% for row in valuesfordisplay %}
         <tr>
@@ -72,106 +90,78 @@
         </tr>
        {% endfor %}
     </table>
-</div>
 
-</section>
 
 <script type='text/javascript'>
-
-    {% autoescape off %}
-    //var obj = jQuery.parseJSON('{{ jsondata }}');
-    {% endautoescape %}
-
-  var data = [4, 8, 15, 16, 23, 42];
-
-  var chart = d3.select("body").append("svg")
-                .attr("class", "chart")
-                .attr("width", 420)
-                .attr("height", 140);
-                .append("g") /* Add Labels */
-                .attr("transform", "translate(10,15)");
-
-  var x = d3.scale.linear()
-         .domain([0, d3.max(data)])
-         .range([0, 420]);
-
-  var y = d3.scale.ordinal()
-     .domain(data)
-     .rangeBands([0, 120]);
-
-  chart.selectAll("rect")
-     .data(data)
-   .enter().append("rect")
-     .attr("y", function(d, i) { return i * 20; })
-     .attr("width", x)
-     .attr("height", y.rangeBand());
-
- chart.selectAll("text")
-     .data(data)
-   .enter().append("text")
-     .attr("x", x)
-     .attr("y", function(d) { return y(d) + y.rangeBand() / 2; })
-     .attr("dx", -3) // padding-right
-     .attr("dy", ".35em") // vertical-align: middle
-     .attr("text-anchor", "end") // text-align: right
-     .text(String);
-
-  /* X notches */
-  chart.selectAll("line")
-     .data(x.ticks(10))
-   .enter().append("line")
-     .attr("x1", x)
-     .attr("x2", x)
-     .attr("y1", 0)
-     .attr("y2", 120)
-     .style("stroke", "#ccc");
-
-  /* Numbers for notches on x */
-  chart.selectAll(".rule")
-     .data(x.ticks(10))
-   .enter().append("text")
-     .attr("class", "rule")
-     .attr("x", x)
-     .attr("y", 0)
-     .attr("dy", -3)
-     .attr("text-anchor", "middle")
-     .text(String);
-
-  /* Y Axis Line */
-  chart.append("line")
-     .attr("y1", 0)
-     .attr("y2", 120)
-     .style("stroke", "#000");
 
 
   // change the argument to match your id
  var node = document.getElementById("map");
 
- d3.json("/static/js/munidata.json", function(data){
-   var pop_datamap = {};
-   //use FIPS code as key
-    data.forEach(function(pueblo){
-      //get id of pueblo with leading 0s.
-      var fips_3digits = pueblo.fips.length == 1 ? ("00" + pueblo.fips) :
-        (pueblo.fips.length == 2 ? ("0" + pueblo.fips) : pueblo.fips);
-     pop_datamap[fips_3digits] = pueblo.population;
-   });
+function bunny(x){
+    nv.addGraph(function() {
+
+      var chart = nv.models.discreteBarChart()
+          .x(function(d) { return d.label })
+          .y(function(d) { return d.value })
+          .staggerLabels(true)
+          .tooltips(false)
+          .showValues(true)
+            .height(400)
+          .forceY([0,40]);
+
+      d3.select('#chart svg')
+          .datum(x)
+        .transition().duration(250)
+          .call(chart);
+
+      //Add Label
+      d3.select('#chart svg')
+      .append("text")
+      .attr("class", "xlabel")
+      .attr("text-anchor", "end")
+      .attr("x", "230")
+      .attr("y", "400")
+      .text("Enrollment Per class");
+
+      nv.utils.windowResize(chart.update);
+
+      return chart;
+    });
+}
+
+
+$.getJSON("{{jsondata}}", function(response){
+  // response is a variable containing the JSON object, if it fetched it successfully
+    $("#name").html("<b>Estadísticas Interactivos por pueblos de San Juan</b>");
+
+    bunny(response["San Juan"]);
+
+    current = null;
+    last = null;
+    my_node = document.getElementById("map");
 
     var hover = function hover(info, path){
         d3.select("#puebloname").text(info.properties.NAME);
-        //d3.select(path).style("fill", "#EEEEEE");
     };
 
-   var pop_map = new AtlasPR({node: node, size: "custom1", tiles: 'pueblos',
-    labels: true,
-    on_ready: function(){
-        // paint after drawing async.
-        pop_map.encode_quan(pop_datamap);
-    }, events: {on_mouseover: hover}
+    var click = function click(object, id){
+        $("#name").html("<b>Estadísticas Interactivos por pueblos de "+object.properties.NAME+"</b>");
+
+        //coloring only selected region
+        d3.selectAll("svg").selectAll("path").style("fill", "white");
+        d3.select(id).style("fill", "red");
+
+        bunny(response[object.properties.NAME]);
+        };
+
+    new AtlasPR({node: my_node, size:"small", tiles: "pueblos",
+        events : {
+            on_click: click,
+            on_mouseover: hover
+        }
     });
-
- });
-
+});
 
   </script>
 
@@ -199,7 +189,9 @@
   </script>
 
 {% endif %}
+</div>
 
+</section>
 
 {% include "pages/footer.html" %}
 
