@@ -18,81 +18,70 @@
 <br />
 
 <section id="content">
+    <div class="row">
+
+        <h1 id="sectiontitle">&nbsp;<br />{{ indicatorName }}</h1>
+
+
+        <div id="map"></div>
+
+        <p id="puebloname">&nbsp;</p>
+
+        <h1>Interactive Reports: </h1>
+        <a href="/joven">Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</a><br/><br />
+
+        <a href="/enrollment">School Enrollment (%)</a><br/><br />
+
+        <!--a href="/college">College Enrollment (%)</a><br/><br /-->
+
+        <a href="/workforce">Workforce education metrics(%)</a><br/><br />
+
+
+        <!--Dropdown of Indicators-->
+        <!--form method="get" action="/search/">
+            <div class="seldir">
+                <label> Estadísticas de la educación </label>
+
+                <select name="indicators" >
+                    <option value="58">-- Indicator --</option>
+                    {% for c in indicators %}
+                    {% if c.category_id == "4" %}
+                        <option value="{{ c.id }}">{{ c.indicator }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                <input type="submit" value="ver" />
+            </div>
+        </form>
+        <p>&nbsp;</p-->
+    </div>
+
 <div class="row">
+{% if valuesfordisplay %}
 
-    <h1>&nbsp;<br />{{ indicatorName }}</h1>
+    <h1>{{ indicatorName }}</h1>
 
+    Sorted By County Name: <br>
 
-    <div id="map"></div>
-
-    <p id="puebloname">&nbsp;</p>
-
-    <h1>Interactive Reports: </h1>
-    <a href="/joven">Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</a>
-
-
-    <!--Dropdown of Indicators-->
-    <form method="get" action="/search/">
-        <div class="seldir">
-            <label> Estadísticas de la educación </label>
-
-            <select name="indicators" >
-                <option value="58">-- Indicator --</option>
-                {% for c in indicators %}
-                {% if c.category_id == "4" %}
-                    <option value="{{ c.id }}">{{ c.indicator }}</option>
-                {% endif %}
-                {% endfor %}
-            </select>
-            <input type="submit" value="ver" />
-        </div>
-    </form>
-    <p>&nbsp;</p>
+    <table id="myTable" border="1" cellpadding="5" cellspacing="0">
+        {% for row in valuesfordisplay %}
+        <tr>
+            {% for col in row %}
+           <td>{{ col }}</td>
+        {% endfor %}
+        </tr>
+       {% endfor %}
+    </table>
 </div>
 
-{% if valuesfordisplay %}
-<div class="row">
-<h1>{{ indicatorName }}</h1>
-<table><tr>
-    <td>
-        Sorted By County Name: <br>
-<table id="myTable" border="1" cellpadding="5" cellspacing="0">
-    <thead>
-        <tr>
-       <td width="200">county</td>
-       <td width="100">value</td></tr>
-   </thead>
-    <tbody>
-    {% for v in valuesfordisplay %}
-    <tr id="{{ v.county_id }}">
-       <td>{{ v.county }}</td>
-       <td>{{ v.value }}</td>
-    </tr>
+</section>
 
-   {% endfor %}
-   </tbody>
-</table>
-</td><td width="20">&nbsp;</td><td>
-Sorted By Value: <br>
-<table id="myTable" border="1" cellpadding="5" cellspacing="0">
-    <thead>
-        <tr>
-       <td width="200">county</td>
-       <td width="100">value</td></tr>
-   </thead>
-    <tbody>
-    {% for k,v in sorted %}
-    <tr id="{{ k }}">
-       <td>{{ k }}</td>
-       <td>{{ v }}</td>
-    </tr>
-
-   {% endfor %}
-   </tbody>
-</table>
-</td></tr>
-</table>
 <script type='text/javascript'>
+
+    {% autoescape off %}
+    //var obj = jQuery.parseJSON('{{ jsondata }}');
+    {% endautoescape %}
+
   var data = [4, 8, 15, 16, 23, 42];
 
   var chart = d3.select("body").append("svg")
@@ -154,6 +143,7 @@ Sorted By Value: <br>
      .attr("y2", 120)
      .style("stroke", "#000");
 
+
   // change the argument to match your id
  var node = document.getElementById("map");
 
@@ -199,13 +189,17 @@ Sorted By Value: <br>
         events: {on_mouseover: hover}
     });
 
+    $("#sectiontitle").append("<h1>Counties of Puerto Rico</h1>");
+    d3.select("#sectiontitle").style("padding-top", "20px");
+
     function transform(attrName) {
     }
+
+
   </script>
 
 {% endif %}
-</div>
-</section>
+
 
 {% include "pages/footer.html" %}
 
