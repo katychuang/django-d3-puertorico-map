@@ -1,0 +1,136 @@
+{% extends "template.html" %}
+{% block title %} - Home{% endblock %}
+{% block css %}
+    <style>
+    /*#map{ text-align:center; width:"100%";  padding: 50px 0;}
+    */
+
+    #puebloname{position: relative;bottom: 50px;right: 80px;font-size: 72px;text-align: right;opacity: 0.25;margin: 0;}
+
+
+    .info {width:320px; vertical-align:text-top; height:300px;}
+        #chart { height:450px;}
+        .xlabel{font-weight: bold;}
+
+    .b {width:550px; height:300px; padding-left:40px;}
+        #map{margin-top:70px;}
+
+    </style>
+
+    <link href="{{ url_for('static', filename='js/nvd3/nv.d3.css') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ url_for('static', filename='js/nvd3/nv.d3.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/nvd3/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/nvd3/tooltip.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/nvd3/models/axis.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/nvd3/models/discreteBar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/nvd3/models/discreteBarChart.js') }}"></script>
+{% endblock css %}
+
+{% block main %}
+
+
+{% include "header.html" %}
+{% include "pagetitle.html" %}
+
+<section>
+<div class="row">
+    <h1> &nbsp; </h1>
+
+    <h1 id="name"></h1>
+    <p>Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</p>
+    <table width="100%" border="0">
+        <tr>
+            <td class="info" align="center">
+                <div id="chart"><svg></svg></div>
+            </td>
+            <td class="b" >
+                <p>Haz click, el nombre del municipio y las estadísticas aparecer&#225;n a la izquierda.</p>
+                <div id="map"></div>
+                <p id="puebloname">San Juan</p>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</section>
+<script>
+function bunny(x){
+    nv.addGraph(function() {
+      var chart = nv.models.discreteBarChart()
+          .x(function(d) { return d.label })
+          .y(function(d) { return d.value })
+          .staggerLabels(true)
+          .tooltips(false)
+          .showValues(true)
+            .height(400)
+          .forceY([0,40]);
+
+      d3.select('#chart svg')
+          .datum(x)
+        .transition().duration(250)
+          .call(chart);
+
+      //Add Label
+      d3.select('#chart svg')
+      .append("text")
+      .attr("class", "xlabel")
+      .attr("text-anchor", "end")
+      .attr("x", "230")
+      .attr("y", "400")
+      .text("Grade Level");
+
+        nv.utils.windowResize(chart.update);
+
+      return chart;
+    });
+}
+
+
+
+$.getJSON('/static/js/edu.json', function(response){
+  // response is a variable containing the JSON object, if it fetched it successfully
+    $("#name").html("<b>Estadísticas Interactivos por pueblos de San Juan</b>");
+    bunny(response["San Juan"]);
+    current = null;
+    last = null;
+    my_node = document.getElementById("map");
+
+    var hover = function hover(info, path){
+        d3.select("#puebloname").text(info.properties.NAME);
+    };
+
+    var click = function click(object, id){
+        $("#name").html("<b>Estadísticas Interactivos por pueblos de "+object.properties.NAME+"</b>");
+
+        //coloring only selected region
+        d3.selectAll("svg").selectAll("path").style("fill", "white");
+        d3.select(id).style("fill", "red");
+        bunny(response[object.properties.NAME]);
+        };
+
+    new AtlasPR({node: my_node, size:"small", tiles: "pueblos",
+        events : {
+            on_click: click,
+            on_mouseover: hover
+        }
+    });
+});
+</script>
+
+<section>
+    <div class="row">
+       <h1>Interactive Reports: </h1>
+        <a href="/joven">Educaci&#243;n obtenida en el grupo de 25 a&#241;os en adelante 2011 (%)</a><br/><br />
+
+        <a href="/enrollment">Grade School Enrollment (%)</a><br/><br />
+
+        <a href="/college">College Enrollment (%)</a><br/><br />
+
+        <a href="/workforce">Workforce education metrics(%)</a><br/><br />
+</div>
+</section>
+
+
+{% include "footer.html" %}
+
+{% endblock %}

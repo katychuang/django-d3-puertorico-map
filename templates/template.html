@@ -1,0 +1,43 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Estadisticas de Juventud de Puerto Rico, 2013{% endblock %}</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="{{ url_for('static', filename='js/d3.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/klass.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/atlaspr.js') }}"></script>
+  <script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/id.css') }}" type="text/css" media="screen, all" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css" media="screen" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/framework.css') }}" type="text/css" media="screen" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/language.css') }}" type="text/css" media="screen" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/atlaspr.css') }}" type="text/css" media="screen" />
+
+  {% block css %}
+  {% endblock css %}
+
+</head>
+
+<body>
+
+<div id="main-wrapper">
+
+    {% block main %}
+    {% endblock main %}
+</div>
+
+</body>
+
+    <script>window.jQuery || document.write('<script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"><\/script>')</script>
+    <script defer src="/static/js/libs/bootstrap.min.js"></script>
+    <script defer src="/static/js/plugins.js"></script>
+    <script defer src="/static/js/script.js"></script>
+
+    <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</html>
