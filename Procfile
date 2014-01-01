@@ -1,1 +1,1 @@
-web: gunicorn techsummitpr.wsgi
+web: gunicorn app:app
