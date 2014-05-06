@@ -75,16 +75,19 @@ def index():
 
 @app.route("/joven/")
 def joven():
-    api_url = "http://www.pixelogicpr.com/PRYouthAPI/public/api/"
-    counties = simplejson.load(urllib.urlopen(api_url+"counties"))
+    try:
+        api_url = "http://www.pixelogicpr.com/PRYouthAPI/public/api/"
+        context = {"json_data": api_url}
 
-    categories = simplejson.load(urllib.urlopen(api_url+"categories"))
+        counties = simplejson.load(urllib.urlopen(api_url+"counties"))
+        # categories = simplejson.load(urllib.urlopen(api_url+"categories"))
+        # indicators = simplejson.load(urllib.urlopen(api_url+"indicatorsList"))
 
-    indicators = simplejson.load(urllib.urlopen(api_url+"indicatorsList"))
-
-    context = {"counties": counties,
-               "categories": categories,
-               "indicators": indicators}
+        # context = {"counties": counties,
+        #            "categories": categories,
+        #            "indicators": indicators}
+    except:
+        context = {"json_data": "/static/js/edu.json"}
 
     return render_template("joven.html", **context)
 
