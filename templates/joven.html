@@ -54,7 +54,7 @@
 
 </section>
 <script>
-function bunny(x){
+function sketch(x){
     nv.addGraph(function() {
       var chart = nv.models.discreteBarChart()
           .x(function(d) { return d.label })
@@ -87,32 +87,38 @@ function bunny(x){
 
 
 
-$.getJSON('/static/js/edu.json', function(response){
-  // response is a variable containing the JSON object, if it fetched it successfully
+$.getJSON("{{ json_data }}", function(response){
+// response is a variable containing the JSON object, if it fetched it successfully
     $("#name").html("<b>Estadísticas Interactivos por pueblos de San Juan</b>");
-    bunny(response["San Juan"]);
+    sketch(response["San Juan"]);
+
     current = null;
     last = null;
     my_node = document.getElementById("map");
 
     var hover = function hover(info, path){
-        d3.select("#puebloname").text(info.properties.NAME);
+      d3.select("#puebloname").text(info.properties.NAME);
     };
 
     var click = function click(object, id){
+
         $("#name").html("<b>Estadísticas Interactivos por pueblos de "+object.properties.NAME+"</b>");
 
         //coloring only selected region
         d3.selectAll("svg").selectAll("path").style("fill", "white");
         d3.select(id).style("fill", "red");
-        bunny(response[object.properties.NAME]);
-        };
 
-    new AtlasPR({node: my_node, size:"small", tiles: "pueblos",
-        events : {
-            on_click: click,
-            on_mouseover: hover
-        }
+        sketch(response[object.properties.NAME]);
+    };
+
+    new AtlasPR({
+      node: my_node,
+      size:"small",
+      tiles: "pueblos",
+      events : {
+          on_click: click,
+          on_mouseover: hover
+      }
     });
 });
 </script>
