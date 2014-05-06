@@ -6,7 +6,7 @@ import simplejson, urllib, json
 from flask import * # do not use '*'; actually input the dependencies
 import logging
 from logging import Formatter, FileHandler
-
+from forms import RegisterForm, LoginForm
 #------------------------------------------------------------------------------#
 # App Config
 #------------------------------------------------------------------------------#
@@ -346,7 +346,19 @@ def workforce():
 
 @app.route("/login")
 def login():
-    return render_template("login.html")
+    form = LoginForm()
+    return render_template("login.html", form=form)
+
+@app.route("/login", methods=('GET', 'POST'))
+def loginaction():
+    form = LoginForm()
+    if form.validate_on_submit():
+        return redirect('/')
+
+        ## TASK #1: You will be adding in the logic here for successful log in.
+
+        ## TASK #2: You will be redirecting the user to the right template.
+    return render_template("login.html", form=form)
 
 @app.route("/register")
 def register():

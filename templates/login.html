@@ -1,14 +1,97 @@
 {% extends "template.html" %}
-{% block title %} - Login{% endblock %}
-{% block content %}
-  <h1>Welcome!</h1>
-  <h3>Please login.</h3>
-    <form method="POST" action="">
-      {{ form.name.label }}{{ form.name }}
-      {{ form.passwd.label }}{{ form.passwd }}
-      <p><input type="submit" value="Submit" class="btn-primary"></p>
-    </form>
-    <p><em>Need an account? </em><a href="/register">Signup!!</a></p>
+{% block title %}PR - Login{% endblock %}
+{% block main %}
+{% include "header.html" %}
+<section id="pagetitle-wrapper" style="background-color: #00b7de;">
+  <div class="row">
+      <div class="twelve columns">
+          <h3 class="">Welcome</h3><p>Please log in to access admin features</p>
+      </div>
+      <div class="twelve columns">
+          <div id="breadcrumb">
+                <ul>
+                   <li class="bread-txt">
+                    <a href="/">
+                        <i class="fa fa-home"></i>TEXT</a></li>  <li class="current-page">Estadísticas
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="content-wrapper">
+    <div class="row">
+        <div class="login" id="theme-my-login">
+            <form method="POST" action="" id="loginform" class="login form-horizontal">
+              <label>{{ form.name.label }}</label>
+              {{ form.name }}
+              {{ form.passwd.label }}{{ form.passwd }}
+              <!--p class="forgetmenot">
+                    <input name="rememberme" type="checkbox" id="rememberme" value="forever">
+                    <label for="rememberme">Recuérdame</label>
+              </p-->
+              <p class="submit">
+                    <input type="submit" name="wp-submit" id="wp-submit" value="Acceder">
+                    <input type="hidden" name="redirect_to" value="/">
+                    <input type="hidden" name="instance" value="">
+                    <input type="hidden" name="action" value="login">
+                </p>
+            </form>
+            <p class="txt-pink">
+                <span><a title="Lost Password" href="http://pixelogic.co/c/bgc/www/lostpassword/">Ayuda! Olvidé mi nombre de usuario / contraseña</a></span>
+            </p>
+            <p class="txt-pink">
+                <span><em>Need an account? </em><a title="Register" href="/register">Register</a></span>
+            </p>
+    </div>
+
+
+
+                </div>
+</section>
+
+
+<hr />
+
+
 {% endblock %}
 
+{% block about %}
 
+<section id="content-wrapper">
+    <div class="row">
+    <div class="twelve columns ipadtop-margin">
+        <div class="highlight-box-up">
+        <div class="nine columns "><h4>Fill in Form</h4></div>
+        <div class="three columns "><a href="#" class="return">Return</a></div>
+        <div class="clear"></div>
+        </div>
+    </div>
+<div class="involucrarse">
+<div class="tabs_container">
+    <div class="tabs-wrapper">
+        <ul class="tabs">
+            <li class="active"><a href="#tab0">Sign In</a></li>
+            <li class=""><a href="#tab1">Sign Up</a></li>
+            <li class=""><a href="#tab2">Terms</a></li>
+        </ul>
+    <div class="tab_container">
+        <div id="tab0" class="tab_content">
+            <p>&nbsp;</p>
+        </div>
+        <div id="tab1" class="tab_content" style="display: none;">
+            <p>Lorem ipsum dolor amet, consectetur quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi aliquid commodi consequatur. Epsum factorial non deposit quid pro quo hic escorol. Olypian quarrels et gorilla congolium sic ad nauseum. Souvlaki ignitus carborundum e pluribus unum. Defacto lingo est igpay atinlay. Marquee selectus non provisio incongruous feline nolo contendre.</p>
+        </div>
+        <div id="tab2" class="tab_content" style="display: none;">
+            <p>Lorem ipsum dolor amet, consectetur quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi aliquid commodi consequatur. Epsum factorial non deposit quid pro quo hic escorol. Olypian quarrels et gorilla congolium sic ad nauseum. Souvlaki ignitus carborundum e pluribus unum. Defacto lingo est igpay atinlay. Marquee selectus non provisio incongruous feline nolo contendre.</p>
+            <a href="#" class="button-foot">Share</a>
+            <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum.</p>
+            <a href="#" class="button-foot">Share</a>
+        </div>
+</div></div>
+</div></div>
+</div>
+</section>
+
+{% endblock %}
