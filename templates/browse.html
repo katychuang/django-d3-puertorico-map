@@ -1,0 +1,248 @@
+{% extends "template.html" %}
+{% block title %}Browse{% endblock %}
+{% block css %}
+    <style>
+
+    </style>
+{% endblock css %}
+
+{% block main %}
+
+
+{% include "header.html" %}
+<!-- pagetitle start here condicional de color-->
+<section id="pagetitle-wrapper" style="background-color: #00b7de;">
+  <div class="row">
+    <div class="twelve columns">
+      <h3 class="">Browse API</h3><p>JSON data</p>
+    </div>
+  </div>
+</section>
+<!-- pagetitle end here -->
+
+<br />
+
+<section id="content">
+  <div class="row">
+      <h1 id="sectiontitle">&nbsp;<br />Filters</h1>
+      <div class="seldir">
+        <div class="filter">
+        <form id="frmIndicatorsFilter" name="frmIndicatorsFilter" action="./" method="post">
+        <select id="categories" name="categories">
+          <option value="5">Economía</option>
+          <option value="4" selected="">Educación</option>
+          <option value="3">Familia</option>
+          <option value="2">Salud y Estilos de Vida</option>
+          <option value="1">Seguridad y Riesgo</option>
+        </select>
+        <select id="counties" name="counties">
+          <option value="79" selected="">Puerto Rico</option>
+          <option value="1">Adjuntas</option>
+          <option value="2">Aguada</option>
+          <option value="3">Aguadilla</option>
+          <option value="4">Aguas Buenas</option>
+          <option value="5">Aibonito</option>
+          <option value="6">Añasco</option>
+          <option value="7">Arecibo</option>
+          <option value="8">Arroyo</option>
+          <option value="9">Barceloneta</option>
+          <option value="10">Barranquitas</option>
+          <option value="11">Bayamón</option>
+          <option value="12">Cabo Rojo</option>
+          <option value="13">Caguas</option>
+          <option value="14">Camuy</option>
+          <option value="15">Canóvanas</option>
+          <option value="16">Carolina</option>
+          <option value="17">Cataño</option>
+          <option value="18">Cayey</option>
+          <option value="19">Ceiba</option>
+          <option value="20">Ciales</option>
+          <option value="21">Cidra</option>
+          <option value="22">Coamo</option>
+          <option value="23">Comerío</option>
+          <option value="24">Corozal</option>
+          <option value="25">Culebra</option>
+          <option value="26">Dorado</option>
+          <option value="27">Fajardo</option>
+          <option value="28">Florida</option>
+          <option value="29">Guánica</option>
+          <option value="30">Guayama</option>
+          <option value="31">Guayanilla</option>
+          <option value="32">Guaynabo</option>
+          <option value="33">Gurabo</option>
+          <option value="34">Hatillo</option>
+          <option value="35">Hormigueros</option>
+          <option value="36">Humacao</option>
+          <option value="37">Isabela</option>
+          <option value="38">Jayuya</option>
+          <option value="39">Juana Díaz</option>
+          <option value="40">Juncos</option>
+          <option value="41">Lajas</option>
+          <option value="42">Lares</option>
+          <option value="43">Las Marías</option>
+          <option value="44">Las Piedras</option>
+          <option value="45">Loíza</option>
+          <option value="46">Luquillo</option>
+          <option value="47">Manatí</option>
+          <option value="48">Maricao</option>
+          <option value="49">Maunabo</option>
+          <option value="50">Mayagüez</option>
+          <option value="51">Moca</option>
+          <option value="52">Morovis</option>
+          <option value="53">Naguabo</option>
+          <option value="54">Naranjito</option>
+          <option value="55">Orocovis</option>
+          <option value="56">Patillas</option>
+          <option value="57">Peñuelas</option>
+          <option value="58">Ponce</option>
+          <option value="59">Quebradillas</option>
+          <option value="60">Rincón</option>
+          <option value="61">Río Grande</option>
+          <option value="62">Sabana Grande</option>
+          <option value="63">Salinas</option>
+          <option value="64">San Germán</option>
+          <option value="65">San Juan</option>
+          <option value="66">San Lorenzo</option>
+          <option value="67">San Sebastián</option>
+          <option value="68">Santa Isabel</option>
+          <option value="69">Toa Alta</option>
+          <option value="70">Toa Baja</option>
+          <option value="71">Trujillo Alto</option>
+          <option value="72">Utuado</option>
+          <option value="73">Vega Alta</option>
+          <option value="74">Vega Baja</option>
+          <option value="75">Vieques</option>
+          <option value="76">Villalba</option>
+          <option value="77">Yabucoa</option>
+          <option value="78">Yauco</option>
+        </select>
+        </form>
+        </div>
+      </div>
+  </div>
+
+  <div class="row">
+    <div class="seven columns">
+      <h1>API Information</h1>
+      <h4 class="panel-title" data-body="countiesAPI">
+        Counties
+      </h4>
+      <div id="countiesAPI" style="display:none" >
+        <p>
+          Method: /counties<br />
+          URL: http://pixelogicpr.com/PRYouthAPI/public/api/counties<br />
+          Params: n/a<br />
+          Description: Returns a list of counties in puerto rico.
+        </p>
+      </div>
+      <h4 class="panel-title" data-body="indicatorsList">
+        Indicators List
+      </h4>
+      <div id="indicatorsList" style="display:none" >
+        <p>
+          Method: /indicatorsList<br />
+          URL: http://pixelogicpr.com/PRYouthAPI/public/api/indicatorsList<br />
+          Params: n/a<br />
+          Description: Returns a list of indicators available.
+        </p>
+      </div>
+      <h4 class="panel-title" data-body="indicatorsByCountyId">
+        Indicators by County Id
+      </h4>
+      <div id="indicatorsByCountyId" style="display:none" >
+        <p>
+          Method: /indicatorsByCountyId<br />
+          URL: http://pixelogicpr.com/PRYouthAPI/public/api/indicatorsByCounty?id=1<br />
+          Params:<br />
+          id : county id<br />
+          Description: Returns a list of indicators by county.
+        </p>
+      </div>
+      <h4 class="panel-title" data-body="indicatorsByCategoryName">
+        Indicators by County Name
+      </h4>
+      <div id="indicatorsByCategoryName" style="display:none" >
+        <p>
+          Method: /indicatorsByCategoryName<br />
+          URL: http://pixelogicpr.com/PRYouthAPI/public/api/indicatorsByCategoryName?category=Salud<br />
+          Params:<br />
+          category : category name (string)<br />
+          Description: Returns a list of indicators by category name. Exaple: Salud, Familia, Segurida.<br />
+        </p>
+      </div>
+      <h4 class="panel-title" data-body="indicatorsByCategoryAndCounty">
+        Indicators by Category and County
+      </h4>
+      <div id="indicatorsByCategoryAndCounty" style="display:none" >
+        <p>
+          Method: /indicatorsByCategoryAndCounty<br />
+          URL: http://pixelogicpr.com/PRYouthAPI/public/api/indicatorsByCategoryAndCounty?category=1&county=1<br />
+          Params:<br />
+          category : category id (integer)<br />
+          county : county id (integer)<br />
+          Description: Returns a list of indicators given a category id and county id.
+        </p>
+      </div>
+      <h4 class="panel-title" data-body="indicatorsByCategoryId">
+        Indicators by Category Id
+      </h4>
+      <div id="indicatorsByCategoryId" style="display:none" >
+        <p>
+          Method: /indicatorsByCategoryId<br />
+          URL: http://pixelogicpr.com/PRYouthAPI/public/api/indicatorsByCategoryId?id=1<br />
+          Params:<br />
+          id : the category id (integer)<br />
+          Description: Returns a list of indicators given a category id.
+        </p>
+      </div>
+      <h4 class="panel-title" data-body="indicatorsByCountyName">
+        Indicators by County Name
+      </h4>
+      <div id="indicatorsByCountyName" style="display:none" >
+        <p>
+          Method: /indicatorsByCountyName<br />
+          URL: http://pixelogicpr.com/PRYouthAPI/public/api/indicatorsByCountyName?county=Adjuntas<br />
+          Params:<br />
+          county: name of a county in puerto rico<br />
+          Description: Returns a list of indicators given a category id.
+        </p>
+      </div>
+      <h4 class="panel-title" data-body="indicators">
+        Indicators
+      </h4>
+      <div id="indicators" style="display:none" >
+        <p>
+          Method: /indicators<br />
+          URL: http://pixelogicpr.com/PRYouthAPI/public/api/indicators?id=1<br />
+          Params:<br />
+          id : indicator id (integer)<br />
+          Description: Given a indicator id returns its details.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+      <hr>
+      <h1> &nbsp; </h1>
+      <h1>{{ indicatorName }} (Example of JSON format) </h1>
+  </div>
+
+</section>
+
+{% include "footer.html" %}
+<script type="text/javascript">
+    $(document).ready(function() {
+
+      $('.panel-title').click(function(){
+        var section = '#'+$(this).data('body');
+
+          if($(this).hasClass('active')){ //is hidden, no active
+              $(section).hide();
+          }else{
+              $(section).show();
+          }
+          $(this).toggleClass('active');
+      });
+   });
+</script>
+{% endblock %}

@@ -61,6 +61,9 @@ def decoder(str):
 def index():
     return render_template("index.html")
 
+@app.route("/browse/")
+def browse():
+    return render_template("browse.html")
 
 
 @app.route("/joven/")
