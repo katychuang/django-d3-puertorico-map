@@ -59,25 +59,16 @@ def decoder(str):
 
 @app.route("/")
 def index():
-    api_url = "http://www.pixelogicpr.com/PRYouthAPI/public/api/"
-    counties = ""  #simplejson.load(urllib.urlopen(api_url+"counties"))
-
-    categories = ""  #simplejson.load(urllib.urlopen(api_url+"categories"))
-
-    indicators = "" #simplejson.load(urllib.urlopen(api_url+"indicatorsList"))
-
-    #pass to template
-    context = { "counties":   counties
-              , "categories": categories
-              , "indicators": indicators}
-
     return render_template("index.html")
+
+
 
 @app.route("/joven/")
 def joven():
     try:
         api_url = "http://www.pixelogicpr.com/PRYouthAPI/public/api/"
-        context = {"json_data": api_url}
+        context = {"json_data": "/static/js/edu.json"}
+        # context = {"json_data": api_url}
 
         counties = simplejson.load(urllib.urlopen(api_url+"counties"))
         # categories = simplejson.load(urllib.urlopen(api_url+"categories"))
